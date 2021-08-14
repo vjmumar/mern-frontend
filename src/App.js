@@ -74,7 +74,7 @@ return token
 const alertHelper = (result,type) => {
 if (type === "Sign In" && result === "Successful") {
 // eslint-disable-next-line no-restricted-globals
-location.href = "http://localhost:3000/home";
+location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 } else if (type === "Sign Up" && result === "Successful") {
 alert(`${type} Successfully`);
 } else {
