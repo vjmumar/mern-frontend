@@ -364,7 +364,7 @@ const filtered = dataClone[0].filter(i => i._id === myId);
 dataClone = [filtered];
 setData(dataClone)
 } else {
-setData(data = []);
+setData(data.splice(0,data.length));
 getUser();
 }
 }
