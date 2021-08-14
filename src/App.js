@@ -1,5 +1,6 @@
 import './App.css';
 import React, {useState,useEffect} from 'react';
+import gear from '../src/Gear-0.2s-200px.gif';
 import Form from './Components/form_component/form';
 import List from './Components/list_component/list';
 import SignInForm from './Components/sign_in_form_component/signin';
@@ -21,6 +22,7 @@ const isLogin = localStorage.getItem("isLogIn");
 const [postId,setPostId] = useState("");
 const [input, setInput] = useState('');
 const [data, setData] = useState([]);
+const [signInClicked,setSignInClicked] = useState(false);
 const [signIn, setSignIn] = useState(true);
 const [user,setUser] = useState('');
 const [password,setPassword] = useState('');
@@ -72,13 +74,34 @@ return token
 }
 
 const alertHelper = (result,type) => {
+  console.log(result)
 if (type === "Sign In" && result === "Successful") {
 // eslint-disable-next-line no-restricted-globals
 location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 } else if (type === "Sign Up" && result === "Successful") {
-alert(`${type} Successfully`);
-} else {
+setTimeout(() => {
+setSignInClicked(false);
+setSignIn(false);
+},1000);
+setTimeout(() => {
+alert(`${type} Successfully Please Sign In Now!`);
+},1500);
+} else if (type === "Sign In" && result === "User Not Found") {
+setTimeout(() => {
+setSignInClicked(false);
+setSignIn(true);
+},1000);
+setTimeout(() => {
+alert(result);
+},1500);
+} else if (type === "Sign Up" && result === "Failed") {
+setTimeout(() => {
+setSignInClicked(false);
+setSignIn(false);
+},1000);
+setTimeout(() => {
 alert(`${type} Failed`);
+},1500);
 }
 }
 
@@ -214,7 +237,7 @@ checkLikes(post);
 
 //log In functions
 const switchBetweenForms = () => {
-if (signIn === true) {
+if (signIn === true && signInClicked === false) {
 return <SignInForm
 //functions
 handleSignIn = {handleSignIn}
@@ -225,7 +248,7 @@ submitSignIn = {submitSignIn}
 user = {user}
 password = {password}
 />
-} else if(signIn === false) {
+} else if(signIn === false && signInClicked === false) {
 return  <SignUpForm
 //functions
 handleSignUp = {handleSignUp}
@@ -236,6 +259,8 @@ submitSignUp = {submitSignUp}
 user = {user}
 password = {password}
 />
+} else if (signInClicked === true) {
+return <img className = "gear" src = {gear} />
 }
 }
 
@@ -261,6 +286,8 @@ const submitSignIn = (e) => {
 e.preventDefault();
 const url = 'https://test-api-node1.herokuapp.com/users/signIn';
 postAxiosLogInOut(url,'Sign In');
+setSignInClicked(true);
+setSignIn(true);
 }
 
 
@@ -269,6 +296,8 @@ const submitSignUp = (e) => {
 e.preventDefault();
 const url = 'https://test-api-node1.herokuapp.com/users/signUp';
 postAxiosLogInOut(url,'Sign Up');
+setSignInClicked(true);
+setSignIn(false);
 }
 
 const handleSignUp = (e) => {
@@ -332,6 +361,8 @@ const handleDeleteComment = (commentId,postId) => {
 deleteComment(commentId,postId)
 }
 
+
+//filter arrays handlers
 const handleFilter  = (e) => {
 const value = e.target.value;
 let dataClone = [...data];
@@ -344,10 +375,23 @@ getUser();
 }
 }
 
+//logOut handlers
+const logOut = () => {
+localStorage.removeItem("isLogIn");
+localStorage.removeItem("myId");
+localStorage.removeItem("token");
+localStorage.removeItem("myName");
+// eslint-disable-next-line no-restricted-globals
+location.href = 'https://vjmumar.github.io/mern-frontend/#/';
+}
+
+const handleLogOut = () => {
+logOut();
+}
+
   return (
     <Router>
     <div className="App">
-    <h1 className = "username">{myName}</h1>
     <Switch>
       <Route exact path = "/">
         <div className = "logIn_wrapper"> 
@@ -359,6 +403,12 @@ getUser();
      {
         isLogin === 'true' ?
         <div className = "home_wrapper">
+
+        <div className = "userDetails">
+        <h1 className = "username">{myName}</h1>
+        <button onClick = {handleLogOut} className = "logOut">Log Out</button>
+        </div>
+
         <Form
         //functions
         handleInputChange = {handleInputChange}

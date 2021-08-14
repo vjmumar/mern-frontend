@@ -1,5 +1,5 @@
 import React from 'react';
-import '../sign_in_form_component/signin.css'
+import '../sign_in_form_component/signin.css';
 
 const SignInForm = (props) => {
 const {handleSignIn,handleUserChange,handlePasswordChange,submitSignIn,user,password} = props;
