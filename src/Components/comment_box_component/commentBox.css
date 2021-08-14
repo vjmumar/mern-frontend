@@ -1,0 +1,35 @@
+.comment_box{
+margin-top: 5px;   
+}
+
+.comment_comments ul{
+padding: 0;
+list-style: none;
+max-height: 200px;
+overflow-y: scroll;   
+}
+
+.comment_comments li{
+padding: 5px;
+border: 1px solid blue;
+margin-bottom: 5px;
+}
+
+.comment_name{
+margin: 0;
+}
+
+.comment_text{
+margin: 5px 0px 0px 0px;
+}
+
+.comment_form form{
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.comment_delete{
+float: right;
+margin-top: 5px;
+}

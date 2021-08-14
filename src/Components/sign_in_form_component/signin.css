@@ -1,0 +1,43 @@
+.signIn_form {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ background: #000000b3;
+ padding: 30px 32px;
+ width: 250px;
+ height: 250px;
+ box-shadow: 2px 1px 17px 10px #63595940;
+}
+
+.signIn_text{
+color: white;
+}
+
+.signIn_userInput {
+padding: 9px 10px;
+margin-bottom: 15px;
+border-radius: 5px;
+border: 0px;
+width: 90%;
+}
+
+.signIn_passwordInput {
+padding: 9px 10px;
+margin-bottom: 15px;
+border-radius: 5px;
+border: 0px;
+width: 90%;
+}
+
+.signIn_submit {
+padding: 10px 50px;
+margin-bottom: 10px;
+}
+
+.signIn_signUpLabel{
+color: white;
+border-bottom: 2px solid white;
+letter-spacing: .5px;
+cursor: pointer;
+}

@@ -1,0 +1,46 @@
+.list_wrapper{
+width: 70%;
+}
+
+
+.list_ul{
+padding: 0;
+width: 100%; 
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-gap: 50px;
+max-height: 650px;
+overflow-y: overlay;
+padding: 15px 35px 15px 0px;
+}
+
+
+
+.list_li{
+list-style: none;
+border: 1px solid;
+display: flex;
+justify-content: space-between;
+padding: 10px 15px;
+align-items: center;
+height: 100%;
+margin-bottom: 10px;
+}
+
+.list_item{
+width: 100%;
+}
+
+
+.list_removePost{
+float: right;
+margin: 18px;
+}
+
+
+.list_commentLabel{
+margin: 0px;
+text-align: center;
+cursor: pointer;
+color: #3860b3;
+}
