@@ -74,34 +74,26 @@ return token
 }
 
 const alertHelper = (result,type) => {
-  console.log(result)
+
+const helper = (status,click,msg) => {
+setTimeout(() => {
+setSignInClicked(click);
+setSignIn(status);
+},1000);
+setTimeout(() => {
+alert(`${type} ${msg}`);
+},1500);
+}
+
 if (type === "Sign In" && result === "Successful") {
 // eslint-disable-next-line no-restricted-globals
 location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 } else if (type === "Sign Up" && result === "Successful") {
-setTimeout(() => {
-setSignInClicked(false);
-setSignIn(false);
-},1000);
-setTimeout(() => {
-alert(`${type} Successfully Please Sign In Now!`);
-},1500);
+helper(false,false, "Successfully Please Sign In Now!");
 } else if (type === "Sign In" && result === "User Not Found") {
-setTimeout(() => {
-setSignInClicked(false);
-setSignIn(true);
-},1000);
-setTimeout(() => {
-alert(result);
-},1500);
+helper(true,false,result);
 } else if (type === "Sign Up" && result === "Failed") {
-setTimeout(() => {
-setSignInClicked(false);
-setSignIn(false);
-},1000);
-setTimeout(() => {
-alert(`${type} Failed`);
-},1500);
+helper(false,false, 'Failed')
 }
 }
 
@@ -382,7 +374,7 @@ localStorage.removeItem("myId");
 localStorage.removeItem("token");
 localStorage.removeItem("myName");
 // eslint-disable-next-line no-restricted-globals
-location.href = 'https://vjmumar.github.io/mern-frontend/#/';
+reloadPage();
 }
 
 const handleLogOut = () => {
