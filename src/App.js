@@ -5,7 +5,7 @@ import List from './Components/list_component/list';
 import SignInForm from './Components/sign_in_form_component/signin';
 import SignUpForm from './Components/sign-up-form-component/signup';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Redirect,
