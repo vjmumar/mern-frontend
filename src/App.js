@@ -109,8 +109,8 @@ localStorage.setItem("isLogIn", false);
 
 const postAxiosLogInOut = (url,type) => {
 const details = {
-Username: user,
-Password: password
+Username: user.toLocaleLowerCase(),
+Password: password.toLocaleLowerCase()
 }
 
 const postDetails = axios.post(url, details);
