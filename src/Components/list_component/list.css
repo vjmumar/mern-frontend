@@ -11,7 +11,7 @@ grid-template-columns: 1fr 1fr;
 grid-gap: 50px;
 max-height: 650px;
 overflow-y: overlay;
-padding: 15px 35px 15px 0px;
+padding: 15px 35px 40px 0px;
 }
 
 
