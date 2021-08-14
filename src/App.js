@@ -85,9 +85,8 @@ alert(`${type} ${msg}`);
 },1500);
 }
 
-console.log(result, type)
-
 if (type === "Sign In" && result === "Successful") {
+setSignInClicked(false);
 // eslint-disable-next-line no-restricted-globals
 location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 } else if (type === "Sign Up" && result === "Successful") {
