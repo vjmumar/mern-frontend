@@ -75,6 +75,8 @@ return token
 
 const alertHelper = (result,type) => {
 
+  console.log(result,type)
+
 const helper = (status,click,msg) => {
 setTimeout(() => {
 setSignInClicked(click);
@@ -91,10 +93,10 @@ setSignInClicked(false);
 location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 } else if (type === "Sign Up" && result === "Successful") {
 helper(false,false, "Successfully Please Sign In Now!");
-} else if (type === "Sign In" && result === "User Not Found") {
+} else if (type === "Sign In" && result === "User Not Found" || result === "Failed") {
 helper(true,false,result);
 } else if (type === "Sign Up" && result === "Failed") {
-helper(false,false, 'Failed')
+helper(false,false, 'Failed Username is Taken')
 }
 }
 

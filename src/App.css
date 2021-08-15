@@ -22,3 +22,15 @@ display: flex;
 flex-direction: column;
 }
 
+
+@media(max-width: 768px) {
+.home_wrapper{
+flex-direction: column !important;
+}
+}
+
+@media(max-width: 480px) {
+.userDetails{
+position: static;
+}
+}

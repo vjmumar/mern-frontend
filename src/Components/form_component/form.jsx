@@ -4,7 +4,7 @@ import css from '../form_component/form.css'
 const Form = (props) => {
 const {inputState,handleInputChange,handleSubmitInput} = props;
     return(
-        <div>
+        <div class = "form_wrapper">
             <form className = "form_form" onSubmit = {handleSubmitInput}>
             <h1 className = "form_text">Post</h1>
             <input 

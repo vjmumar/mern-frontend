@@ -44,3 +44,16 @@ text-align: center;
 cursor: pointer;
 color: #3860b3;
 }
+
+@media(max-width: 768px) {
+.list_wrapper{
+width: 100% !important; 
+}
+}
+    
+
+@media(max-width: 500px) {
+.list_ul{
+grid-template-columns: 1fr;
+}
+}
