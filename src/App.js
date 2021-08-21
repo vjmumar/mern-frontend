@@ -77,7 +77,7 @@ function App() {
 		if (type === "Sign In" && result === "Successful") {
 			setSignInClicked(false);
 			// eslint-disable-next-line no-restricted-globals
-			location.href = "https://test-api-node1.herokuapp.com/home";
+			location.href = "https://vjmumar.github.io/mern-frontend/#/home";
 		} else if (type === "Sign Up" && result === "Successful") {
 			helper(false, false, "Successfully Please Sign In Now!");
 		} else if ((type === "Sign In" && result === "User Not Found") || result === "Failed") {
