@@ -13,7 +13,7 @@ const List = (props) => {
 
 	//variables
 	const dispatch = useDispatch();
-	const myId = useSelector((state) => state.GET_USER_ID);
+	const myId = localStorage.getItem("myId");
 	const userData = useSelector((state) => state.GET_DATA_REDUCER);
 
 	//states

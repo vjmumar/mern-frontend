@@ -13,13 +13,14 @@ import axios from "axios";
 import { IS_UPDATE_ACTION } from "./Redux/actions/IS_UPDATE";
 
 function App() {
+	
 	//state redux
-	const myId = useSelector((state) => state.GET_USER_ID);
-	const myName = useSelector((state) => state.GET_NAME_REDUCER);
+	const myId = localStorage.getItem("myId");
+	const myName = localStorage.getItem("myName");
+	const isLogin = localStorage.getItem("isLogIn");
 	const userData = useSelector((state) => state.FILTER_DATA_REDUCER);
 	const isLoading = useSelector((state) => state.IS_LOADING_REDUCER);
 	const isUpdate = useSelector((state) => state.IS_UPDATE_REDUCER);
-	const isLogin = localStorage.getItem("isLogIn");
 
 	//use dispatch
 	const dispatch = useDispatch();
