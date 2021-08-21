@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FILTER_DATA } from "./DATA_ACTIONS";
 import { GET_DATA_TYPE, GET_ID_TYPE, GET_NAME_TYPE } from "../types/type";
+import { IS_LOADING_ACTION } from "./IS_LOADING_ACTION";
 
 const myId = localStorage.getItem("myId")
 
@@ -18,6 +19,7 @@ return [filterdData];
 
 export const FETCH_DATA = () => {
 	return (dispatch) => {
+		dispatch(IS_LOADING_ACTION(true));
 		const getUserDetails = axios.get("https://test-api-node1.herokuapp.com/users");
 		getUserDetails.then((result) => {
             for (let i = 0 ; i < result.data.length; i++) {
@@ -27,6 +29,7 @@ export const FETCH_DATA = () => {
             dispatch(DATA_FETCHED(result.data));
 			dispatch({ type: GET_ID_TYPE });
 			dispatch({ type: GET_NAME_TYPE });
+			dispatch(IS_LOADING_ACTION(false));
 		});
 		getUserDetails.catch((err) => {
 			throw err;

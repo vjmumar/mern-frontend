@@ -1,10 +1,14 @@
 import React from 'react';
 import '../comment_box_component/commentBox.css';
+import { useSelector } from 'react-redux';
 
 const CommentBox = (props) => {
 //props
-const {commentInput,handleCommentChange,commentsArray,handleCommentSubmit,handleDeleteComment,postId} = props;
+const {commentInput,handleCommentChange,handleCommentSubmit,handleDeleteComment,postId} = props;
 const myId = localStorage.getItem("myId")
+
+//redux states
+const commentsArray = useSelector(state => state.GET_COMMENTS_REDUCER);
 
 //functions
 const appendDeleteButton = (id,commentId) => {

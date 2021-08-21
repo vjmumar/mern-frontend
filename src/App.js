@@ -2,6 +2,7 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FETCH_DATA, DATA_FETCHED } from "./Redux/actions/FETCH_USER";
+import { GET_COMMENTS_ACTION } from "./Redux/actions/GET_COMMENTS";
 import gear from "../src/Gear-0.2s-200px.gif";
 import Form from "./Components/form_component/form";
 import List from "./Components/list_component/list";
@@ -9,12 +10,15 @@ import SignInForm from "./Components/sign_in_form_component/signin";
 import SignUpForm from "./Components/sign-up-form-component/signup";
 import { HashRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import axios from "axios";
+import { IS_UPDATE_ACTION } from "./Redux/actions/IS_UPDATE";
 
 function App() {
 	//state redux
 	const myId = useSelector((state) => state.GET_USER_ID);
 	const myName = useSelector((state) => state.GET_NAME_REDUCER);
 	const userData = useSelector((state) => state.FILTER_DATA_REDUCER);
+	const isLoading = useSelector((state) => state.IS_LOADING_REDUCER);
+	const isUpdate = useSelector((state) => state.IS_UPDATE_REDUCER);
 	const isLogin = localStorage.getItem("isLogIn");
 
 	//use dispatch
@@ -28,6 +32,7 @@ function App() {
 	const [user, setUser] = useState("");
 	const [password, setPassword] = useState("");
 	const [commentInput, setCommentInput] = useState("");
+	const [selectedFile, setFile] = useState();
 
 	//useEffect
 	useEffect(() => {
@@ -72,7 +77,7 @@ function App() {
 		if (type === "Sign In" && result === "Successful") {
 			setSignInClicked(false);
 			// eslint-disable-next-line no-restricted-globals
-			location.href = "https://vjmumar.github.io/mern-frontend/#/home";
+			location.href = "https://test-api-node1.herokuapp.com/home";
 		} else if (type === "Sign Up" && result === "Successful") {
 			helper(false, false, "Successfully Please Sign In Now!");
 		} else if ((type === "Sign In" && result === "User Not Found") || result === "Failed") {
@@ -121,36 +126,69 @@ function App() {
 		setInput(inputValue);
 	};
 
-	const addPost = () => {
-		const post = {
-			text: input,
-			userId: myId,
-		};
+	const handleFileChange = (e) => {
+		const inputFile = e.target.files[0];
+		setFile(inputFile);
+	};
 
-		const postText = axios.post("https://test-api-node1.herokuapp.com/post", post, {
+	const addPost = () => {
+		const uploadPost = new FormData();
+		uploadPost.append("images", selectedFile);
+		uploadPost.append("text", input);
+		uploadPost.append("userId", myId);
+
+		const postText = axios.post("https://test-api-node1.herokuapp.com/post", uploadPost, {
 			headers: {
 				authorization: `Bearer ${getTokenFromStorage()}`,
 			},
 		});
 
-		postText.then(() => {
-			reloadPage();
+		postText.then((result) => {
+			dispatch(FETCH_DATA());
+			console.log(result);
 		});
 		postText.catch((err) => {
+			alert("File Not Supported or File Is Too Big!");
+		});
+	};
+
+	const updatePost = () => {
+		const details = {
+			postId: postId,
+			text: input,
+		};
+		const updatePost = axios.post("https://test-api-node1.herokuapp.com/post/update", details, {
+			headers: {
+				authorization: `Bearer ${getTokenFromStorage()}`,
+			},
+		});
+
+		updatePost.then(() => {
+			dispatch(FETCH_DATA());
+			dispatch(IS_UPDATE_ACTION(false));
+		});
+		updatePost.catch((err) => {
 			throw err;
 		});
 	};
 
 	const handleSubmitInput = (e) => {
 		e.preventDefault();
-		addPost();
+		setFile("");
+		setInput("");
+		if (isUpdate === true) {
+			updatePost();
+		} else {
+			addPost();
+		}
 	};
 
 	//List Component Functions
 
-	const removePost = (postId) => {
+	const removePost = (postId, cloudinaryId) => {
 		const details = {
 			postId: postId,
+			cloudinaryId: cloudinaryId,
 		};
 		const url = "https://test-api-node1.herokuapp.com/post/del";
 
@@ -161,7 +199,7 @@ function App() {
 		});
 
 		postRemove.then(() => {
-			reloadPage();
+			dispatch(FETCH_DATA());
 		});
 
 		postRemove.catch((err) => {
@@ -169,8 +207,14 @@ function App() {
 		});
 	};
 
-	const handleRemovePost = (postId) => {
-		removePost(postId);
+	const handleRemovePost = (postId, cloudinaryId) => {
+		removePost(postId, cloudinaryId);
+	};
+
+	const handleUpdatePost = (post) => {
+		setInput(post.text);
+		setPostId(post._id);
+		dispatch(IS_UPDATE_ACTION(true));
 	};
 
 	const checkLikes = (post) => {
@@ -196,7 +240,7 @@ function App() {
 		});
 
 		postLikesBackEnd.then(() => {
-			reloadPage();
+			dispatch(FETCH_DATA());
 		});
 		postLikesBackEnd.catch((err) => {
 			throw err;
@@ -270,9 +314,15 @@ function App() {
 	const submitSignUp = (e) => {
 		e.preventDefault();
 		const url = "https://test-api-node1.herokuapp.com/users/signUp";
-		postAxiosLogInOut(url, "Sign Up");
-		setSignInClicked(true);
-		setSignIn(false);
+		if (user.length < 4) {
+			alert("Minimum UserName Length is 4");
+		} else if (user.indexOf(" ") !== -1) {
+			alert("Please Remove Spaces from your Username");
+		} else {
+			postAxiosLogInOut(url, "Sign Up");
+			setSignInClicked(true);
+			setSignIn(false);
+		}
 	};
 
 	const handleSignUp = (e) => {
@@ -303,7 +353,13 @@ function App() {
 			},
 		});
 		sendComment.then((result) => {
-			reloadPage();
+			dispatch(FETCH_DATA());
+			const myPost = result.data.addComment.Post;
+			myPost.map((post) => {
+				if (post._id === postId) {
+					dispatch(GET_COMMENTS_ACTION(post.comments));
+				}
+			});
 		});
 		sendComment.catch((err) => {
 			throw err;
@@ -322,8 +378,15 @@ function App() {
 			commentId: commentId,
 		};
 		const deleteCommentAxios = axios.post(url, details);
-		deleteCommentAxios.then(() => {
-			reloadPage();
+		deleteCommentAxios.then((result) => {
+			dispatch(FETCH_DATA());
+			delete result.data.findRemoveComment.Password;
+			const myPost = result.data.findRemoveComment.Post;
+			myPost.map((post) => {
+				if (post._id === postId) {
+					dispatch(GET_COMMENTS_ACTION(post.comments));
+				}
+			});
 		});
 		deleteCommentAxios.catch((err) => {
 			throw err;
@@ -380,23 +443,28 @@ function App() {
 									//functions
 									handleInputChange={handleInputChange}
 									handleSubmitInput={handleSubmitInput}
+									handleFileChange={handleFileChange}
 									//states
 									inputState={input}
 								/>
 
-								<List
-									//functions
-									handleLikes={handleLikes}
-									handleRemovePost={handleRemovePost}
-									handleCommentChange={handleCommentChange}
-									handleCommentSubmit={handleCommentSubmit}
-									getPostId={getPostId}
-									handleDeleteComment={handleDeleteComment}
-									handleFilter={handleFilter}
-									//states
-									postId={postId}
-									commentInput={commentInput}
-								/>
+								<div style={{ display: isLoading === true ? "none" : "block", width: "100%" }}>
+									<List
+										//functions
+										handleLikes={handleLikes}
+										handleRemovePost={handleRemovePost}
+										handleCommentChange={handleCommentChange}
+										handleCommentSubmit={handleCommentSubmit}
+										getPostId={getPostId}
+										handleDeleteComment={handleDeleteComment}
+										handleFilter={handleFilter}
+										handleUpdatePost={handleUpdatePost}
+										//states
+										postId={postId}
+										commentInput={commentInput}
+									/>
+								</div>
+								<img style={{ display: isLoading === false ? "none" : "block", margin: "auto" }} src={gear} />
 							</div>
 						) : (
 							<Redirect to="/" />

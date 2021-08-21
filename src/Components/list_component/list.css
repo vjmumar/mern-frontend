@@ -1,5 +1,5 @@
 .list_wrapper{
-width: 70%;
+width: 90%;
 }
 
 
@@ -23,7 +23,7 @@ display: flex;
 justify-content: space-between;
 padding: 10px 15px;
 align-items: center;
-height: 100%;
+height: fit-content;
 margin-bottom: 10px;
 overflow-wrap: anywhere;
 }
@@ -35,7 +35,7 @@ width: 100%;
 
 .list_removePost{
 float: right;
-margin: 18px;
+margin: 18px 5px 18px 0px;
 }
 
 
@@ -44,6 +44,13 @@ margin: 0px;
 text-align: center;
 cursor: pointer;
 color: #3860b3;
+}
+
+.list_image{
+width: 100%;
+height: 260px;
+object-fit: contain;
+margin: 0 auto;
 }
 
 @media(max-width: 768px) {

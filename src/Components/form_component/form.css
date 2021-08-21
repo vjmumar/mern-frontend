@@ -27,6 +27,10 @@ text-align: center;
 padding: 8px;
 }
 
+.form_input_file{
+padding: 10px 0px;
+}
+
 .form_input:focus{
 border: 1px solid;
 outline: none;
@@ -35,6 +39,11 @@ outline: none;
 .form_submit{
 padding: 8px;
 margin: 5px;
+}
+
+.form_cancel{
+padding: 8px;
+margin: 5px;  
 }
 
 @media(max-width: 768px) {
